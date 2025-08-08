@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movie Search</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --primary-color: #e74c3c;
+        --secondary-color: #2c3e50;
+        --accent-color: #3498db;
+        --text-color: #fff;
+        --light-text: #ddd;
+        --border-color: #555;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(to right, #ff0000, #8b0000);
+        color: var(--text-color);
+        margin: 0;
+        padding-top: 80px;
+        box-sizing: border-box;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      header {
+        background-color: rgba(0, 0, 0, 0.7);
+        color: var(--text-color);
+        padding: 20px 40px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      }
+
+      .logo {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+      }
+
+      nav ul li {
+        margin-left: 15px;
+      }
+
+      nav a {
+        color: var(--light-text);
+        text-decoration: none;
+        font-size: 1.1em;
+        transition: color 0.3s ease;
+      }
+
+      nav a:hover {
+        color: var(--accent-color);
+      }
+
+      .search-container {
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 40px;
+        border-radius: 10px;
+        margin-top: 40px;
+        margin-bottom: 40px;
+        text-align: center;
+        box-shadow: 0 4px 15px var(--shadow-color);
+        width: 90%;
+        max-width: 600px;
+      }
+
+      .search-container label {
+        display: block;
+        color: var(--light-text);
+        margin-bottom: 10px;
+        font-size: 1.2em;
+      }
+
+      #movie-title {
+        padding: 15px 20px;
+        width: 90%;
+        max-width: 400px;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        margin-bottom: 20px;
+        background-color: rgba(255, 255, 255, 0.9);
+        color: var(--secondary-color);
+        transition: box-shadow 0.3s ease;
+      }
+
+      #movie-title:focus {
+        outline: none;
+        box-shadow: 0 0 8px var(--accent-color);
+      }
+
+      #search-btn {
+        padding: 15px 30px;
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.2em;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      #search-btn:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+      }
+
+      #search-btn:active {
+        transform: translateY(0);
+      }
+
+      #table-container {
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px var(--shadow-color);
+        width: 90%;
+        max-width: 1200px;
+        overflow-x: auto;
+      }
+
+      #table-container h2 {
+        color: var(--accent-color);
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        color: var(--light-text);
+      }
+
+      th,
+      td {
+        border: none;
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      th {
+        background-color: var(--secondary-color);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-bottom: 2px solid var(--accent-color);
+      }
+
+      th:first-child {
+        border-top-left-radius: 8px;
+      }
+      th:last-child {
+        border-top-right-radius: 8px;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+      tr:nth-child(odd) {
+        background-color: rgba(0, 0, 0, 0.6);
+      }
+
+      img {
+        max-width: 80px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px var(--shadow-color);
+        vertical-align: middle;
+        transition: transform 1s ease;
+      }
+
+      img:hover {
+        transform: scale(1.5);
+      }
+
+      td {
+        transition: color 1s ease;
+      }
+      td:hover {
+        color: #8b0000;
+      }
+
+      #table-container p {
+        color: var(--light-text);
+        text-align: center;
+        font-size: 1.2em;
+      }
+
+      @media (max-width: 768px) {
+        header {
+          flex-direction: column;
+          padding: 15px 20px;
+          text-align: center;
+        }
+
+        nav ul {
+          margin-top: 10px;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        nav ul li {
+          margin: 5px 10px;
+        }
+
+        .search-container {
+          padding: 20px;
+        }
+
+        #movie-title {
+          width: 80%;
+          margin: 0 auto 15px;
+          display: block;
+        }
+
+        #search-btn {
+          width: 80%;
+        }
+
+        #table-container {
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a href="#" class="logo">MovieFinder</a>
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Movies</a></li>
+          <li><a href="#">TV Shows</a></li>
+          <li><a href="#">About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="search-container">
+      <label for="movie-title">Search for a Movie:</label>
+      <input
+        type="text"
+        id="movie-title"
+        placeholder="Enter Movie Name exm..(The Godfather)"
+      />
+      <button id="search-btn">Search</button>
+    </div>
+
+    <div id="table-container"></div>
+
+    <script>
+      document.getElementById("search-btn").addEventListener("click", () => {
+        const movieTitle = document.getElementById("movie-title").value;
+        if (movieTitle) {
+          fetchMovieData(movieTitle);
+        }
+      });
+
+      function fetchMovieData(title) {
+        const xhr = new XMLHttpRequest();
+        const apiKey = "c993a11d";
+        const apiUrl = `https://www.omdbapi.com/?s=${title}&apikey=${apiKey}`;
+
+        xhr.onload = function () {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            const responseJson = xhr.responseText;
+            localStorage.setItem("movieData", responseJson);
+            const data = JSON.parse(responseJson);
+            displayTable(data);
+          } else {
+            console.error("The request failed with status:", xhr.status);
+            document.getElementById("table-container").innerHTML =
+              "<p>Error fetching data. Please check your API key.</p>";
+          }
+        };
+
+        xhr.onerror = function () {
+          console.error("A network error occurred.");
+          document.getElementById("table-container").innerHTML =
+            "<p>Network error. Please check your connection.</p>";
+        };
+
+        xhr.open("GET", apiUrl, true);
+        xhr.send();
+      }
+
+      function displayTable(data) {
+        const container = document.getElementById("table-container");
+        container.innerHTML = "";
+
+        if (data.Response === "True" && data.Search) {
+          const table = document.createElement("table");
+          const thead = table.createTHead();
+          const tbody = document.createElement("tbody");
+
+          const headerRow = thead.insertRow();
+          ["Poster", "Title", "Year"].forEach((text) => {
+            const th = document.createElement("th");
+            th.textContent = text;
+            headerRow.appendChild(th);
+          });
+
+          data.Search.forEach((movie) => {
+            const row = tbody.insertRow();
+
+            const posterCell = row.insertCell();
+            const posterImg = document.createElement("img");
+            posterImg.src =
+              movie.Poster !== "N/A"
+                ? movie.Poster
+                : "https://via.placeholder.com/100";
+            posterImg.alt = movie.Title + " Poster";
+            posterCell.appendChild(posterImg);
+
+            row.insertCell().textContent = movie.Title;
+            row.insertCell().textContent = movie.Year;
+          });
+          table.appendChild(tbody);
+          container.appendChild(table);
+        } else {
+          container.innerHTML = `<p>No results found for "${
+            document.getElementById("movie-title").value
+          }".</p>`;
+        }
+      }
+    </script>
+  </body>
+</html>
