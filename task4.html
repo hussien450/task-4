@@ -5,30 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Movie Search</title>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bellefair&family=Figtree:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Mozilla+Headline:wght@200..700&family=Outfit:wght@100..900&display=swap');
+      @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&display=swap");
+
+      :root {
+        --background-color: #121212;
+        --card-background: rgba(30, 30, 30, 0.8);
+        --accent-color: #00e0ff; /* Vibrant Aqua */
+        --text-color: #e0e0e0;
+        --light-text: #a0a0a0;
+        --shadow-color: rgba(0, 0, 0, 0.5);
+      }
+
       * {
         padding: 0;
         margin: 0;
         box-sizing: border-box;
       }
-      :root {
-        --primary-color: #e74c3c;
-        --secondary-color: #2c3e50;
-        --accent-color: #3498db;
-        --text-color: #fff;
-        --light-text: #ddd;
-        --border-color: #555;
-        --shadow-color: rgba(0, 0, 0, 0.3);
-      }
 
       body {
-        font-family: "Mozilla Headline","Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: url(images/back1.jpg) no-repeat center center fixed;
+        font-family: "Outfit", sans-serif;
+        background: var(--background-color);
+        background-image: url("images/back1.jpg");
         background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
         color: var(--text-color);
-        margin: 0;
-        padding-top: 80px;
-        box-sizing: border-box;
+        padding-top: 100px;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -36,8 +38,9 @@
       }
 
       header {
-        background-color: rgba(0, 0, 0, 0.7);
-        color: var(--text-color);
+        background-color: rgba(18, 18, 18, 0.9);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
         padding: 20px 40px;
         position: fixed;
         top: 0;
@@ -47,221 +50,191 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 4px 15px var(--shadow-color);
       }
 
       .logo {
         font-size: 1.8em;
-        font-weight: bold;
-        color: var(--primary-color);
+        font-weight: 700;
+        color: var(--accent-color);
         text-decoration: none;
-        transition: 0.7s color ease;
-        cursor: pointer;
+        letter-spacing: 1px;
+        transition: transform 0.3s ease;
       }
       .logo:hover {
-        color: var(--accent-color);
+        transform: scale(1.05);
       }
 
       nav ul {
         list-style: none;
-        padding: 0;
-        margin: 0;
         display: flex;
-        align-items: center;
       }
-
       nav ul li {
-        margin-left: 15px;
+        margin-left: 25px;
       }
-
       nav a {
         color: var(--light-text);
         text-decoration: none;
-        font-size: 1.1em;
+        font-size: 1em;
+        position: relative;
         transition: color 0.3s ease;
       }
-
+      nav a::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--accent-color);
+        transition: width 0.3s ease;
+      }
       nav a:hover {
         color: var(--accent-color);
       }
+      nav a:hover::after {
+        width: 100%;
+      }
 
       .search-container {
-        background-color: rgba(0, 0, 0, 0.6);
+        background: rgba(30, 30, 30, 0.6);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 40px;
-        border-radius: 10px;
+        border-radius: 15px;
         margin-top: 40px;
         margin-bottom: 40px;
         text-align: center;
-        box-shadow: 0 4px 15px var(--shadow-color);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
         width: 90%;
-        max-width: 600px;
+        max-width: 650px;
       }
 
       .search-container label {
         display: block;
-        color: var(--light-text);
-        margin-bottom: 10px;
-        font-size: 1.2em;
+        color: var(--text-color);
+        margin-bottom: 20px;
+        font-size: 1.5em;
+        font-weight: 700;
       }
 
       #movie-title {
-        padding: 15px 20px;
-        width: 90%;
-        max-width: 400px;
+        width: 80%;
+        padding: 15px 25px;
         border: none;
-        border-radius: 8px;
-        font-size: 18px;
-        margin-bottom: 20px;
-        background-color: rgba(255, 255, 255, 0.9);
-        color: var(--secondary-color);
-        transition: box-shadow 0.3s ease;
-      }
-
-      #movie-title:focus {
+        border-radius: 50px;
+        font-size: 1em;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: var(--text-color);
+        margin-right: 10px;
+        transition: box-shadow 0.3s ease, background-color 0.3s ease;
         outline: none;
-        box-shadow: 0 0 8px var(--accent-color);
+      }
+      #movie-title::placeholder {
+        color: var(--light-text);
+      }
+      #movie-title:focus {
+        background-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 15px var(--accent-color);
       }
 
       #search-btn {
         padding: 15px 30px;
         background-color: var(--accent-color);
-        color: white;
+        color: var(--background-color);
         border: none;
-        border-radius: 8px;
+        border-radius: 50px;
         cursor: pointer;
-        font-size: 1.2em;
-        font-weight: bold;
-        transition: background-color 0.3s ease, transform 0.2s ease;
+        font-size: 1em;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        transition: background-color 0.3s ease, transform 0.2s ease,
+          box-shadow 0.3s ease;
       }
-
       #search-btn:hover {
-        background-color: #2980b9;
+        background-color: #00b0c9;
         transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 224, 255, 0.4);
       }
-
       #search-btn:active {
         transform: translateY(0);
       }
 
-      #table-container {
-        background-color: rgba(0, 0, 0, 0.7);
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px var(--shadow-color);
+      #results-container {
         width: 90%;
-        max-width: 1200px;
-        overflow-x: auto;
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 30px;
+        padding: 30px;
       }
-
-      #table-container h2 {
-        color: var(--accent-color);
-        text-align: center;
-        margin-top: 0;
-        margin-bottom: 20px;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        color: var(--light-text);
-      }
-
-      th,
-      td {
-        border: none;
-        padding: 15px;
-        text-align: left;
-        border-bottom: 1px solid var(--border-color);
-      }
-
-      th {
-        background-color: var(--secondary-color);
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        border-bottom: 2px solid var(--accent-color);
-      }
-
-      th:first-child {
-        border-top-left-radius: 8px;
-      }
-      th:last-child {
-        border-top-right-radius: 8px;
-      }
-
-      tr:last-child td {
-        border-bottom: none;
-      }
-      tr:nth-child(odd) {
-        background-color: rgba(0, 0, 0, 0.6);
-      }
-
-      img {
-        max-width: 80px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px var(--shadow-color);
-        vertical-align: middle;
-        transition: transform 1s ease;
-      }
-
-      img:hover {
-        transform: scale(2);
-      }
-
-      td {
-        transition: color 1s ease;
-      }
-      td:hover {
-        color: #8b0000;
-      }
-
-      #table-container p {
+      #results-container p {
         color: var(--light-text);
         text-align: center;
         font-size: 1.2em;
-      }
-      tr {
-        transition: background-color 1s ease;
+        grid-column: 1 / -1;
       }
 
-      tr:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+      .movie-card {
+        background: var(--card-background);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-align: center;
+      }
+      .movie-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px var(--shadow-color),
+          0 0 25px var(--accent-color);
+      }
+      .movie-card img {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+        border-bottom: 3px solid var(--accent-color);
+      }
+      .movie-card-info {
+        padding: 15px;
+      }
+      .movie-card-info h3 {
+        font-size: 1.2em;
+        margin-bottom: 5px;
+        color: var(--text-color);
+        font-weight: 700;
+      }
+      .movie-card-info p {
+        font-size: 0.9em;
+        color: var(--light-text);
       }
 
       @media (max-width: 768px) {
+        body {
+          padding-top: 150px;
+        }
         header {
           flex-direction: column;
           padding: 15px 20px;
           text-align: center;
         }
-
         nav ul {
-          margin-top: 10px;
-          flex-wrap: wrap;
-          justify-content: center;
+          margin-top: 15px;
         }
-
         nav ul li {
-          margin: 5px 10px;
+          margin: 0 10px;
         }
-
         .search-container {
-          padding: 20px;
+          padding: 30px;
         }
-
         #movie-title {
-          width: 80%;
+          width: 100%;
           margin: 0 auto 15px;
           display: block;
         }
-
         #search-btn {
-          width: 80%;
-        }
-
-        #table-container {
-          padding: 15px;
+          width: 100%;
         }
       }
     </style>
@@ -280,28 +253,66 @@
     </header>
 
     <div class="search-container">
-      <label for="movie-title">Search for a Movie:</label>
+      <label for="movie-title">Find Your Next Movie:</label>
       <input
         type="text"
         id="movie-title"
-        placeholder="Enter Movie Name exm..(The Godfather)"
+        placeholder="Enter movie title (e.g., The Matrix)"
       />
-      <button id="search-btn">Search</button>
     </div>
 
-    <div id="table-container"></div>
+    <div id="results-container"></div>
 
     <script>
-      document.getElementById("movie-title").addEventListener("keydown", () => {
-        const movieTitle = document.getElementById("movie-title").value;
-        console.log("Movie title entered:", movieTitle);
+      const searchBtn = document.getElementById("search-btn");
+      const movieTitleInput = document.getElementById("movie-title");
+      const resultsContainer = document.getElementById("results-container");
+      const logo = document.getElementById("logo");
+      let debounceTimeout;
+
+      const debounce = (func, delay) => {
+        return function (...args) {
+          clearTimeout(debounceTimeout);
+          debounceTimeout = setTimeout(() => func.apply(this, args), delay);
+        };
+      };
+
+      movieTitleInput.addEventListener(
+        "input",
+        debounce(() => {
+          const movieTitle = movieTitleInput.value.trim();
+          if (movieTitle.length > 2) {
+            fetchMovieData(movieTitle);
+          } else {
+            resultsContainer.innerHTML =
+              "<p>Start typing to see movie results.</p>";
+          }
+        }, 500)
+      );
+
+      searchBtn.addEventListener("click", () => {
+        const movieTitle = movieTitleInput.value;
         if (movieTitle) {
           fetchMovieData(movieTitle);
         } else {
+          resultsContainer.innerHTML =
+            "<p>Please enter a movie title to search.</p>";
         }
       });
 
-      document.getElementById("logo").addEventListener("click", (e) => {
+      movieTitleInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const movieTitle = movieTitleInput.value;
+          if (movieTitle) {
+            fetchMovieData(movieTitle);
+          } else {
+            resultsContainer.innerHTML =
+              "<p>Please enter a movie title to search.</p>";
+          }
+        }
+      });
+
+      logo.addEventListener("click", (e) => {
         e.preventDefault();
         window.location.reload();
       });
@@ -311,22 +322,24 @@
         const apiKey = "c993a11d";
         const apiUrl = `https://www.omdbapi.com/?s=${title}&apikey=${apiKey}`;
 
+        resultsContainer.innerHTML = "<p>Loading...</p>";
+
         xhr.onload = function () {
           if (xhr.status >= 200 && xhr.status < 300) {
             const responseJson = xhr.responseText;
             localStorage.setItem("movieData", responseJson);
             const data = JSON.parse(responseJson);
-            displayTable(data);
+            displayMovieCards(data);
           } else {
             console.error("The request failed with status:", xhr.status);
-            document.getElementById("table-container").innerHTML =
+            resultsContainer.innerHTML =
               "<p>Error fetching data. Please check your API key.</p>";
           }
         };
 
         xhr.onerror = function () {
           console.error("A network error occurred.");
-          document.getElementById("table-container").innerHTML =
+          resultsContainer.innerHTML =
             "<p>Network error. Please check your connection.</p>";
         };
 
@@ -334,43 +347,38 @@
         xhr.send();
       }
 
-      function displayTable(data) {
-        const container = document.getElementById("table-container");
-        container.innerHTML = "";
+      function displayMovieCards(data) {
+        resultsContainer.innerHTML = "";
 
         if (data.Response === "True" && data.Search) {
-          const table = document.createElement("table");
-          const thead = table.createTHead();
-          const tbody = document.createElement("tbody");
-
-          const headerRow = thead.insertRow();
-          ["Poster", "Title", "Year"].forEach((text) => {
-            const th = document.createElement("th");
-            th.textContent = text;
-            headerRow.appendChild(th);
-          });
-
           data.Search.forEach((movie) => {
-            const row = tbody.insertRow();
+            const movieCard = document.createElement("div");
+            movieCard.className = "movie-card";
 
-            const posterCell = row.insertCell();
             const posterImg = document.createElement("img");
             posterImg.src =
               movie.Poster !== "N/A"
                 ? movie.Poster
-                : "https://via.placeholder.com/100";
+                : "https://via.placeholder.com/300x450.png?text=Poster+Not+Found";
             posterImg.alt = movie.Title + " Poster";
-            posterCell.appendChild(posterImg);
 
-            row.insertCell().textContent = movie.Title;
-            row.insertCell().textContent = movie.Year;
+            const infoDiv = document.createElement("div");
+            infoDiv.className = "movie-card-info";
+
+            const title = document.createElement("h3");
+            title.textContent = movie.Title;
+
+            const year = document.createElement("p");
+            year.textContent = movie.Year;
+
+            infoDiv.appendChild(title);
+            infoDiv.appendChild(year);
+            movieCard.appendChild(posterImg);
+            movieCard.appendChild(infoDiv);
+            resultsContainer.appendChild(movieCard);
           });
-          table.appendChild(tbody);
-          container.appendChild(table);
         } else {
-          container.innerHTML = `<p>No results found for "${
-            document.getElementById("movie-title").value
-          }".</p>`;
+          resultsContainer.innerHTML = `<p>No results found for "${movieTitleInput.value}".</p>`;
         }
       }
     </script>
